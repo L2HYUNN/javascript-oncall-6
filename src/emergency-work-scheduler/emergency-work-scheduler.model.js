@@ -17,11 +17,16 @@ class EmergencyWorkSchedulerModel {
 
   static HOLIDAY = {
     1: { 1: true },
+    2: {},
     3: { 1: true },
+    4: {},
     5: { 5: true },
     6: { 6: true },
+    7: {},
     8: { 15: true },
+    9: {},
     10: { 3: true, 9: true },
+    11: {},
     12: { 25: true },
   };
 

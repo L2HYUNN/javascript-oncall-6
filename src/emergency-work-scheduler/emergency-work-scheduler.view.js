@@ -1,4 +1,4 @@
-import { read } from '../lib/view.js';
+import { print, read } from '../lib/view.js';
 
 class EmergencyWorkSchedulerView {
   static QUERY = Object.freeze({
@@ -23,6 +23,10 @@ class EmergencyWorkSchedulerView {
     const result = await read(EmergencyWorkSchedulerView.QUERY.READ_WEEKEND_EMERGENCY_WORK_ORDER);
 
     return result;
+  }
+
+  printEmergencyWorkSchedule(schedule) {
+    print(schedule);
   }
 }
 
