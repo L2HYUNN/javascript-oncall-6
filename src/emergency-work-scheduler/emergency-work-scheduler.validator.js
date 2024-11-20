@@ -3,6 +3,10 @@ class EmergencyWorkSchedulerValidator {
     INVALID_INPUT: '[ERROR] 유효하지 않은 입력 값입니다. 다시 입력해 주세요.',
   };
 
+  static RULE = {
+    MAX_NICKNAME_LENGTH: 5,
+  };
+
   static DAY = ['월', '화', '수', '목', '금', '토', '일'];
 
   #parseEmergencyWorkDate(value) {
@@ -36,7 +40,7 @@ class EmergencyWorkSchedulerValidator {
     return result;
   }
 
-  #validateDuplicateEmergencyWorkOrder(value) {
+  #validateHasDuplicatedNickname(value) {
     if (new Set(value).size !== value.length) {
       throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
     }
@@ -45,7 +49,7 @@ class EmergencyWorkSchedulerValidator {
   validateWeekdayEmergencyWorkOrder(value) {
     const orders = this.#parseWeekdayEmergencyWorkOrder(value);
 
-    this.#validateDuplicateEmergencyWorkOrder(orders);
+    this.#validateHasDuplicatedNickname(orders);
   }
 }
 
