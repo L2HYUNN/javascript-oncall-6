@@ -47,6 +47,11 @@ describe('EmergencyWorkSchedulerValidator', () => {
         input: '준팍,도밥,수아,수아루루글로,루루,글로',
         expectedError: EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT,
       },
+      {
+        description: '근무자가 5명이 되지 않는 경우 에러를 발생시켜야만 한다',
+        input: '준팍,도밥,루루,글로',
+        expectedError: EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT,
+      },
     ])('$description', ({ input, expectedError }) => {
       expect(() => emergencyWorkSchedulerValidator.validateWeekdayEmergencyWorkOrder(input)).toThrow(expectedError);
     });

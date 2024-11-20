@@ -5,6 +5,8 @@ class EmergencyWorkSchedulerValidator {
 
   static RULE = {
     MAX_NICKNAME_LENGTH: 5,
+    MIN_WORKER_LENGTH: 5,
+    MAX_WORKER_LENGTH: 35,
   };
 
   static DAY = ['월', '화', '수', '목', '금', '토', '일'];
@@ -52,11 +54,18 @@ class EmergencyWorkSchedulerValidator {
     }
   }
 
+  #validateIsLessThanMinWorkerLength(workers) {
+    if (workers.length < EmergencyWorkSchedulerValidator.RULE.MIN_WORKER_LENGTH) {
+      throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
+    }
+  }
+
   validateWeekdayEmergencyWorkOrder(value) {
     const orders = this.#parseWeekdayEmergencyWorkOrder(value);
 
     this.#validateHasDuplicatedNickname(orders);
     this.#validateHasInvalidLengthOfNickname(orders);
+    this.#validateIsLessThanMinWorkerLength(orders);
   }
 }
 
