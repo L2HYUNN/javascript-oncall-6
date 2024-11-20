@@ -7,6 +7,24 @@ class EmergencyWorkSchedulerModel {
 
   #validator;
 
+  static MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+  static WEEKDAY = ['월', '화', '수', '목', '금'];
+
+  static WEEKEND = ['토', '일'];
+
+  static DAY = [...EmergencyWorkSchedulerModel.WEEKDAY, ...EmergencyWorkSchedulerModel.WEEKEND];
+
+  static HOLIDAY = {
+    1: { 1: true },
+    3: { 1: true },
+    5: { 5: true },
+    6: { 6: true },
+    8: { 15: true },
+    10: { 3: true, 9: true },
+    12: { 25: true },
+  };
+
   constructor(validator) {
     this.#validator = validator;
   }
@@ -47,11 +65,62 @@ class EmergencyWorkSchedulerModel {
 
     return this.#weekendWorkOrder;
   }
+
+  createEmergencyWorkSchedule() {
+    const { month, day } = this.#workDate;
+    const dayIndex = EmergencyWorkSchedulerModel.DAY.indexOf(day);
+    const prevWorker = [];
+
+    return Array.from({ length: EmergencyWorkSchedulerModel.MONTH[month - 1] }, (_, index) => {
+      const todayIndex = (dayIndex + index) % 7;
+      const today = EmergencyWorkSchedulerModel.DAY[todayIndex];
+      const isHoliday = EmergencyWorkSchedulerModel.HOLIDAY[month][index + 1];
+
+      if (EmergencyWorkSchedulerModel.WEEKDAY.includes(today)) {
+        if (isHoliday) {
+          if (prevWorker[0] === this.#weekendWorkOrder[0]) {
+            const memory = this.#weekendWorkOrder[0];
+            this.#weekendWorkOrder[0] = this.#weekendWorkOrder[1];
+            this.#weekendWorkOrder[1] = memory;
+          }
+
+          const worker = this.#weekendWorkOrder.shift();
+          this.#weekendWorkOrder.push(worker);
+
+          prevWorker.pop();
+          prevWorker.push(worker);
+
+          return `${month}월 ${index + 1}일 ${today}(휴일) ${worker}`;
+        }
+
+        const worker = this.#weekdayWorkOrder.shift();
+        this.#weekdayWorkOrder.push(worker);
+
+        prevWorker.pop();
+        prevWorker.push(worker);
+
+        return `${month}월 ${index + 1}일 ${today} ${worker}`;
+      }
+
+      if (EmergencyWorkSchedulerModel.WEEKEND.includes(today)) {
+        if (prevWorker[0] === this.#weekendWorkOrder[0]) {
+          const memory = this.#weekendWorkOrder[0];
+          this.#weekendWorkOrder[0] = this.#weekendWorkOrder[1];
+          this.#weekendWorkOrder[1] = memory;
+        }
+
+        const worker = this.#weekendWorkOrder.shift();
+        this.#weekendWorkOrder.push(worker);
+
+        prevWorker.pop();
+        prevWorker.push(worker);
+
+        return `${month}월 ${index + 1}일 ${today} ${worker}`;
+      }
+
+      return today;
+    });
+  }
 }
 
 export default EmergencyWorkSchedulerModel;
-
-/**
- * 31
- * 0 1 2 3 4 5
- */
