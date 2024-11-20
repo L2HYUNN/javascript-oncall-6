@@ -9,26 +9,26 @@ class EmergencyWorkSchedulerValidator {
 
   static DAY = ['월', '화', '수', '목', '금', '토', '일'];
 
-  #parseEmergencyWorkDate(value) {
-    const [month, day] = value.split(',');
+  #parseEmergencyWorkDate(date) {
+    const [month, day] = date.split(',');
 
     return { month: month, day };
   }
 
-  #validateEmergencyWorkMonth(value) {
-    if (!(1 <= value && value <= 12)) {
+  #validateEmergencyWorkMonth(month) {
+    if (!(1 <= month && month <= 12)) {
       throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
     }
   }
 
-  #validateEmergencyWorkDay(value) {
-    if (!EmergencyWorkSchedulerValidator.DAY.includes(value)) {
+  #validateEmergencyWorkDay(day) {
+    if (!EmergencyWorkSchedulerValidator.DAY.includes(day)) {
       throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
     }
   }
 
-  validateEmergencyWorkDate(value) {
-    const { month, day } = this.#parseEmergencyWorkDate(value);
+  validateEmergencyWorkDate(date) {
+    const { month, day } = this.#parseEmergencyWorkDate(date);
 
     this.#validateEmergencyWorkMonth(Number(month));
     this.#validateEmergencyWorkDay(day);
