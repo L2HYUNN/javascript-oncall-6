@@ -60,12 +60,19 @@ class EmergencyWorkSchedulerValidator {
     }
   }
 
+  #validateIsGreaterThanMaxWorkerLength(workers) {
+    if (workers.length > EmergencyWorkSchedulerValidator.RULE.MAX_WORKER_LENGTH) {
+      throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
+    }
+  }
+
   validateWeekdayEmergencyWorkOrder(value) {
     const orders = this.#parseWeekdayEmergencyWorkOrder(value);
 
     this.#validateHasDuplicatedNickname(orders);
     this.#validateHasInvalidLengthOfNickname(orders);
     this.#validateIsLessThanMinWorkerLength(orders);
+    this.#validateIsGreaterThanMaxWorkerLength(orders);
   }
 }
 
