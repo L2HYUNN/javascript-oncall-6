@@ -31,14 +31,18 @@ class EmergencyWorkSchedulerController {
     });
   }
 
+  #generateEmergencyWorkSchedule() {
+    this.#emergencyWorkSchedulerView.printEmergencyWorkSchedule(
+      this.#emergencyWorkSchedulerModel.createEmergencyWorkSchedule().join('\n'),
+    );
+  }
+
   async generateScheduler() {
     await this.#registerEmergencyWorkDate();
     await this.#registerWeekdayEmergencyWorkOrder();
     await this.#registerWeekendEmergencyWorkOrder();
 
-    const workScheduler = this.#emergencyWorkSchedulerModel.createEmergencyWorkSchedule();
-
-    this.#emergencyWorkSchedulerView.printEmergencyWorkSchedule(workScheduler.join('\n'));
+    this.#generateEmergencyWorkSchedule();
   }
 }
 
