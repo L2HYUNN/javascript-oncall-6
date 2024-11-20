@@ -40,14 +40,14 @@ class EmergencyWorkSchedulerValidator {
     return result;
   }
 
-  #validateHasDuplicatedNickname(value) {
-    if (new Set(value).size !== value.length) {
+  #validateHasDuplicatedNickname(nicknames) {
+    if (new Set(nicknames).size !== nicknames.length) {
       throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
     }
   }
 
-  #validateHasInvalidLengthOfNickname(values) {
-    if (values.some((value) => value.length > EmergencyWorkSchedulerValidator.RULE.MAX_NICKNAME_LENGTH)) {
+  #validateHasInvalidLengthOfNickname(nicknames) {
+    if (nicknames.some((nickname) => nickname.length > EmergencyWorkSchedulerValidator.RULE.MAX_NICKNAME_LENGTH)) {
       throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
     }
   }
