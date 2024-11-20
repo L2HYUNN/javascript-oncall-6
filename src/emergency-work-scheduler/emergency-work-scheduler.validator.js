@@ -74,6 +74,15 @@ class EmergencyWorkSchedulerValidator {
     this.#validateIsLessThanMinWorkerLength(orders);
     this.#validateIsGreaterThanMaxWorkerLength(orders);
   }
+
+  validateWeekendEmergencyWorkOrder(value) {
+    const orders = this.#parseWeekdayEmergencyWorkOrder(value);
+
+    this.#validateHasDuplicatedNickname(orders);
+    this.#validateHasInvalidLengthOfNickname(orders);
+    this.#validateIsLessThanMinWorkerLength(orders);
+    this.#validateIsGreaterThanMaxWorkerLength(orders);
+  }
 }
 
 export default EmergencyWorkSchedulerValidator;
