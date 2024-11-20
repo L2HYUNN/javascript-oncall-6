@@ -1,6 +1,8 @@
 class EmergencyWorkSchedulerModel {
   #workDate;
 
+  #weekdayWorkOrder;
+
   #validator;
 
   constructor(validator) {
@@ -20,6 +22,20 @@ class EmergencyWorkSchedulerModel {
     this.#workDate = { month: Number(month), day };
 
     return this.#workDate;
+  }
+
+  #parseWeekdayEmergencyWorkOrder(value) {
+    const result = value.split(',');
+
+    return result;
+  }
+
+  setWeekdayEmergencyWorkOrder(orders) {
+    this.#validator.validateWeekdayEmergencyWorkOrder(orders);
+
+    this.#weekdayWorkOrder = this.#parseWeekdayEmergencyWorkOrder(orders);
+
+    return this.#weekdayWorkOrder;
   }
 }
 

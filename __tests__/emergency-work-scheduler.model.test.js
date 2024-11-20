@@ -15,4 +15,12 @@ describe('EmergencyWorkSchedulerModel', () => {
 
     expect(result).toEqual({ month: 5, day: '월' });
   });
+
+  it('평일 비상 근무 순서를 설정한다', () => {
+    const input = '준팍,도밥,수아,루루,글로';
+
+    const result = emergencyWorkSchedulerModel.setWeekdayEmergencyWorkOrder(input);
+
+    expect(result).toEqual(['준팍', '도밥', '수아', '루루', '글로']);
+  });
 });
