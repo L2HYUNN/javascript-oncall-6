@@ -3,6 +3,7 @@ import EmergencyWorkSchedulerView from './emergency-work-scheduler/emergency-wor
 class App {
   async run() {
     await new EmergencyWorkSchedulerView().readEmergencyWorkDate();
+    await new EmergencyWorkSchedulerView().readWeekDayEmergencyWorkOrder();
   }
 }
 
