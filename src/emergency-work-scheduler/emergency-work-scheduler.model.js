@@ -100,14 +100,18 @@ class EmergencyWorkSchedulerModel {
     return worker;
   }
 
+  #getToday(day, dayIndex) {
+    const todayIndex = (EmergencyWorkSchedulerModel.DAY.indexOf(day) + dayIndex) % 7;
+
+    return EmergencyWorkSchedulerModel.DAY[todayIndex];
+  }
+
   createEmergencyWorkSchedule() {
     const { month, day } = this.#workDate;
-    const dayIndex = EmergencyWorkSchedulerModel.DAY.indexOf(day);
     const prevWorker = [];
 
     return Array.from({ length: EmergencyWorkSchedulerModel.MONTH[month - 1] }, (_, index) => {
-      const todayIndex = (dayIndex + index) % 7;
-      const today = EmergencyWorkSchedulerModel.DAY[todayIndex];
+      const today = this.#getToday(day, index);
 
       if (EmergencyWorkSchedulerModel.WEEKDAY.includes(today)) {
         if (this.#isHoliday(month, index + 1)) {
