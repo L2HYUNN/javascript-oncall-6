@@ -71,6 +71,14 @@ class EmergencyWorkSchedulerModel {
     return this.#weekendWorkOrder;
   };
 
+  #exchangeWorkOrder(workerA, workerB) {
+    if (workerA[0] === workerB[0]) {
+      const memory = workerB[0];
+      workerB[0] = workerB[1];
+      workerB[1] = memory;
+    }
+  }
+
   createEmergencyWorkSchedule() {
     const { month, day } = this.#workDate;
     const dayIndex = EmergencyWorkSchedulerModel.DAY.indexOf(day);
@@ -83,11 +91,7 @@ class EmergencyWorkSchedulerModel {
 
       if (EmergencyWorkSchedulerModel.WEEKDAY.includes(today)) {
         if (isHoliday) {
-          if (prevWorker[0] === this.#weekendWorkOrder[0]) {
-            const memory = this.#weekendWorkOrder[0];
-            this.#weekendWorkOrder[0] = this.#weekendWorkOrder[1];
-            this.#weekendWorkOrder[1] = memory;
-          }
+          this.#exchangeWorkOrder(prevWorker, this.#weekendWorkOrder);
 
           const worker = this.#weekendWorkOrder.shift();
           this.#weekendWorkOrder.push(worker);
@@ -108,11 +112,7 @@ class EmergencyWorkSchedulerModel {
       }
 
       if (EmergencyWorkSchedulerModel.WEEKEND.includes(today)) {
-        if (prevWorker[0] === this.#weekendWorkOrder[0]) {
-          const memory = this.#weekendWorkOrder[0];
-          this.#weekendWorkOrder[0] = this.#weekendWorkOrder[1];
-          this.#weekendWorkOrder[1] = memory;
-        }
+        this.#exchangeWorkOrder(prevWorker, this.#weekendWorkOrder);
 
         const worker = this.#weekendWorkOrder.shift();
         this.#weekendWorkOrder.push(worker);
