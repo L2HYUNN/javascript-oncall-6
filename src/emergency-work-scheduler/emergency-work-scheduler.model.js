@@ -3,6 +3,8 @@ class EmergencyWorkSchedulerModel {
 
   #weekdayWorkOrder;
 
+  #weekendWorkOrder;
+
   #validator;
 
   constructor(validator) {
@@ -24,7 +26,7 @@ class EmergencyWorkSchedulerModel {
     return this.#workDate;
   }
 
-  #parseWeekdayEmergencyWorkOrder(value) {
+  #parseEmergencyWorkOrder(value) {
     const result = value.split(',');
 
     return result;
@@ -33,9 +35,17 @@ class EmergencyWorkSchedulerModel {
   setWeekdayEmergencyWorkOrder(orders) {
     this.#validator.validateWeekdayEmergencyWorkOrder(orders);
 
-    this.#weekdayWorkOrder = this.#parseWeekdayEmergencyWorkOrder(orders);
+    this.#weekdayWorkOrder = this.#parseEmergencyWorkOrder(orders);
 
     return this.#weekdayWorkOrder;
+  }
+
+  setWeekendEmergencyWorkOrder(orders) {
+    this.#validator.validateWeekendEmergencyWorkOrder(orders);
+
+    this.#weekendWorkOrder = this.#parseEmergencyWorkOrder(orders);
+
+    return this.#weekendWorkOrder;
   }
 }
 
