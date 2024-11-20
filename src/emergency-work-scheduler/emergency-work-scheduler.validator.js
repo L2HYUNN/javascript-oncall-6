@@ -29,6 +29,24 @@ class EmergencyWorkSchedulerValidator {
     this.#validateEmergencyWorkMonth(Number(month));
     this.#validateEmergencyWorkDay(day);
   }
+
+  #parseWeekdayEmergencyWorkOrder(value) {
+    const result = value.split(',');
+
+    return result;
+  }
+
+  #validateDuplicateEmergencyWorkOrder(value) {
+    if (new Set(value).size !== value.length) {
+      throw new Error(EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT);
+    }
+  }
+
+  validateWeekdayEmergencyWorkOrder(value) {
+    const orders = this.#parseWeekdayEmergencyWorkOrder(value);
+
+    this.#validateDuplicateEmergencyWorkOrder(orders);
+  }
 }
 
 export default EmergencyWorkSchedulerValidator;
