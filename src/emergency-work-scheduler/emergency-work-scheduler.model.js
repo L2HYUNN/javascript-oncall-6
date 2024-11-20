@@ -71,6 +71,10 @@ class EmergencyWorkSchedulerModel {
     return this.#weekendWorkOrder;
   };
 
+  #isHoliday(month, day) {
+    return Boolean(EmergencyWorkSchedulerModel.HOLIDAY[month][day]);
+  }
+
   #exchangeWorkOrder(workerA, workerB) {
     if (workerA[0] === workerB[0]) {
       const memory = workerB[0];
@@ -87,10 +91,10 @@ class EmergencyWorkSchedulerModel {
     return Array.from({ length: EmergencyWorkSchedulerModel.MONTH[month - 1] }, (_, index) => {
       const todayIndex = (dayIndex + index) % 7;
       const today = EmergencyWorkSchedulerModel.DAY[todayIndex];
-      const isHoliday = EmergencyWorkSchedulerModel.HOLIDAY[month][index + 1];
+      // const isHoliday = EmergencyWorkSchedulerModel.HOLIDAY[month][index + 1];
 
       if (EmergencyWorkSchedulerModel.WEEKDAY.includes(today)) {
-        if (isHoliday) {
+        if (this.#isHoliday(month, index + 1)) {
           this.#exchangeWorkOrder(prevWorker, this.#weekendWorkOrder);
 
           const worker = this.#weekendWorkOrder.shift();
@@ -101,6 +105,8 @@ class EmergencyWorkSchedulerModel {
 
           return `${month}월 ${index + 1}일 ${today}(휴일) ${worker}`;
         }
+
+        this.#exchangeWorkOrder(prevWorker, this.#weekendWorkOrder);
 
         const worker = this.#weekdayWorkOrder.shift();
         this.#weekdayWorkOrder.push(worker);
