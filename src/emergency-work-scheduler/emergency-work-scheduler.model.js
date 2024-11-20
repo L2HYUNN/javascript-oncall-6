@@ -83,6 +83,18 @@ class EmergencyWorkSchedulerModel {
     }
   }
 
+  #processWork(prevWorker, workOrder) {
+    this.#exchangeWorkOrder(prevWorker, workOrder);
+
+    const worker = workOrder.shift();
+    workOrder.push(worker);
+
+    prevWorker.pop();
+    prevWorker.push(worker);
+
+    return worker;
+  }
+
   createEmergencyWorkSchedule() {
     const { month, day } = this.#workDate;
     const dayIndex = EmergencyWorkSchedulerModel.DAY.indexOf(day);
@@ -91,40 +103,21 @@ class EmergencyWorkSchedulerModel {
     return Array.from({ length: EmergencyWorkSchedulerModel.MONTH[month - 1] }, (_, index) => {
       const todayIndex = (dayIndex + index) % 7;
       const today = EmergencyWorkSchedulerModel.DAY[todayIndex];
-      // const isHoliday = EmergencyWorkSchedulerModel.HOLIDAY[month][index + 1];
 
       if (EmergencyWorkSchedulerModel.WEEKDAY.includes(today)) {
         if (this.#isHoliday(month, index + 1)) {
-          this.#exchangeWorkOrder(prevWorker, this.#weekendWorkOrder);
-
-          const worker = this.#weekendWorkOrder.shift();
-          this.#weekendWorkOrder.push(worker);
-
-          prevWorker.pop();
-          prevWorker.push(worker);
+          const worker = this.#processWork(prevWorker, this.#weekendWorkOrder);
 
           return `${month}월 ${index + 1}일 ${today}(휴일) ${worker}`;
         }
 
-        this.#exchangeWorkOrder(prevWorker, this.#weekendWorkOrder);
-
-        const worker = this.#weekdayWorkOrder.shift();
-        this.#weekdayWorkOrder.push(worker);
-
-        prevWorker.pop();
-        prevWorker.push(worker);
+        const worker = this.#processWork(prevWorker, this.#weekdayWorkOrder);
 
         return `${month}월 ${index + 1}일 ${today} ${worker}`;
       }
 
       if (EmergencyWorkSchedulerModel.WEEKEND.includes(today)) {
-        this.#exchangeWorkOrder(prevWorker, this.#weekendWorkOrder);
-
-        const worker = this.#weekendWorkOrder.shift();
-        this.#weekendWorkOrder.push(worker);
-
-        prevWorker.pop();
-        prevWorker.push(worker);
+        const worker = this.#processWork(prevWorker, this.#weekendWorkOrder);
 
         return `${month}월 ${index + 1}일 ${today} ${worker}`;
       }
