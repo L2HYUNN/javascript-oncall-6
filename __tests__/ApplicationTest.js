@@ -58,7 +58,7 @@ const run = async ({ inputs = [], expected = [] }) => {
 };
 
 describe('온콜 테스트', () => {
-  test.skip('예외 테스트', async () => {
+  test('예외 테스트', async () => {
     await runExceptions({
       inputs: ['0,일'],
       retryInputs: [

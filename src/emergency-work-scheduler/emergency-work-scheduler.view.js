@@ -28,6 +28,10 @@ class EmergencyWorkSchedulerView {
   printEmergencyWorkSchedule(schedule) {
     print(schedule);
   }
+
+  printErrorMessage(message) {
+    print(message);
+  }
 }
 
 export default EmergencyWorkSchedulerView;

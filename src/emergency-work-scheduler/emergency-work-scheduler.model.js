@@ -40,14 +40,14 @@ class EmergencyWorkSchedulerModel {
     return { month: month, day };
   }
 
-  setEmergencyWorkDate(date) {
+  setEmergencyWorkDate = (date) => {
     this.#validator.validateEmergencyWorkDate(date);
 
     const { month, day } = this.#parseEmergencyWorkDate(date);
     this.#workDate = { month: Number(month), day };
 
     return this.#workDate;
-  }
+  };
 
   #parseEmergencyWorkOrder(value) {
     const result = value.split(',');
@@ -55,21 +55,21 @@ class EmergencyWorkSchedulerModel {
     return result;
   }
 
-  setWeekdayEmergencyWorkOrder(orders) {
+  setWeekdayEmergencyWorkOrder = (orders) => {
     this.#validator.validateWeekdayEmergencyWorkOrder(orders);
 
     this.#weekdayWorkOrder = this.#parseEmergencyWorkOrder(orders);
 
     return this.#weekdayWorkOrder;
-  }
+  };
 
-  setWeekendEmergencyWorkOrder(orders) {
+  setWeekendEmergencyWorkOrder = (orders) => {
     this.#validator.validateWeekendEmergencyWorkOrder(orders);
 
     this.#weekendWorkOrder = this.#parseEmergencyWorkOrder(orders);
 
     return this.#weekendWorkOrder;
-  }
+  };
 
   createEmergencyWorkSchedule() {
     const { month, day } = this.#workDate;

@@ -1,3 +1,5 @@
+import { safeInput } from '../lib/utils.js';
+
 class EmergencyWorkSchedulerController {
   #emergencyWorkSchedulerModel;
 
@@ -9,14 +11,20 @@ class EmergencyWorkSchedulerController {
   }
 
   async generateScheduler() {
-    const workDate = await this.#emergencyWorkSchedulerView.readEmergencyWorkDate();
-    this.#emergencyWorkSchedulerModel.setEmergencyWorkDate(workDate);
+    await safeInput(this.#emergencyWorkSchedulerView.readEmergencyWorkDate, {
+      onInput: this.#emergencyWorkSchedulerModel.setEmergencyWorkDate,
+      onError: this.#emergencyWorkSchedulerView.printErrorMessage,
+    });
 
-    const weekdayWorkOrder = await this.#emergencyWorkSchedulerView.readWeekdayEmergencyWorkOrder();
-    this.#emergencyWorkSchedulerModel.setWeekdayEmergencyWorkOrder(weekdayWorkOrder);
+    await safeInput(this.#emergencyWorkSchedulerView.readWeekdayEmergencyWorkOrder, {
+      onInput: this.#emergencyWorkSchedulerModel.setWeekdayEmergencyWorkOrder,
+      onError: this.#emergencyWorkSchedulerView.printErrorMessage,
+    });
 
-    const weekendWorkOrder = await this.#emergencyWorkSchedulerView.readWeekendEmergencyWorkOrder();
-    this.#emergencyWorkSchedulerModel.setWeekendEmergencyWorkOrder(weekendWorkOrder);
+    await safeInput(this.#emergencyWorkSchedulerView.readWeekendEmergencyWorkOrder, {
+      onInput: this.#emergencyWorkSchedulerModel.setWeekendEmergencyWorkOrder,
+      onError: this.#emergencyWorkSchedulerView.printErrorMessage,
+    });
 
     const workScheduler = this.#emergencyWorkSchedulerModel.createEmergencyWorkSchedule();
 
