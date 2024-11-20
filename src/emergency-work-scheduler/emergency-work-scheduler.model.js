@@ -30,6 +30,11 @@ class EmergencyWorkSchedulerModel {
     12: { 25: true },
   };
 
+  static FORMAT = {
+    DEFAULT: ({ month, day, today, worker }) => `${month}월 ${day}일 ${today} ${worker}`,
+    HOLIDAY: ({ month, day, today, worker }) => `${month}월 ${day}일 ${today}(휴일) ${worker}`,
+  };
+
   constructor(validator) {
     this.#validator = validator;
   }
@@ -108,18 +113,18 @@ class EmergencyWorkSchedulerModel {
         if (this.#isHoliday(month, index + 1)) {
           const worker = this.#processWork(prevWorker, this.#weekendWorkOrder);
 
-          return `${month}월 ${index + 1}일 ${today}(휴일) ${worker}`;
+          return EmergencyWorkSchedulerModel.FORMAT.HOLIDAY({ month, day: index + 1, today, worker });
         }
 
         const worker = this.#processWork(prevWorker, this.#weekdayWorkOrder);
 
-        return `${month}월 ${index + 1}일 ${today} ${worker}`;
+        return EmergencyWorkSchedulerModel.FORMAT.DEFAULT({ month, day: index + 1, today, worker });
       }
 
       if (EmergencyWorkSchedulerModel.WEEKEND.includes(today)) {
         const worker = this.#processWork(prevWorker, this.#weekendWorkOrder);
 
-        return `${month}월 ${index + 1}일 ${today} ${worker}`;
+        return EmergencyWorkSchedulerModel.FORMAT.DEFAULT({ month, day: index + 1, today, worker });
       }
 
       return today;
