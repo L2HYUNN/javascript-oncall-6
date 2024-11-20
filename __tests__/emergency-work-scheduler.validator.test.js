@@ -19,6 +19,11 @@ describe('EmergencyWorkSchedulerValidator', () => {
         input: '40,월',
         expectedError: EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT,
       },
+      {
+        description: '유효한 요일이 입력되지 않은 경우 에러를 발생시켜야만 한다',
+        input: '1,눈',
+        expectedError: EmergencyWorkSchedulerValidator.ERROR_MESSAGE.INVALID_INPUT,
+      },
     ])('$description', ({ input, expectedError }) => {
       expect(() => emergencyWorkSchedulerValidator.validateEmergencyWorkDate(input)).toThrow(expectedError);
     });
